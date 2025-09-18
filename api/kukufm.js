@@ -20,11 +20,12 @@ export default async function handler(req, res) {
 
   try {
     const response = await axios.get(url, { params, headers });
-
-    // ✅ Send back the full unmodified JSON response
-    res.status(200).json(response.data);
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json(response.data); // send full response back
   } catch (error) {
-    console.error("Error fetching KukuFM data:", error.message);
-    res.status(500).json({ error: "Failed to fetch KukuFM data" });
+    res.status(500).json({
+      error: "Failed to fetch KukuFM data",
+      details: error.message,
+    });
   }
 }
