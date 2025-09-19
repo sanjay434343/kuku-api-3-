@@ -1,8 +1,10 @@
 {
-  "name": "kukufm-api",
+  "name": "kukufm-vercel-api",
   "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "axios": "^1.6.7"
-  }
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "dependencies": {}
 }
