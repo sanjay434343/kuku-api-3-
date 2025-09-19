@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 export default async function handler(req, res) {
   const BASE_URL = "https://tv.kukufm.com/api/v3/home/all/";
 
@@ -30,18 +32,17 @@ export default async function handler(req, res) {
       .join("; ");
   }
 
-  // Extract query params
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  const searchParams = url.searchParams;
-
-  const page = searchParams.get("page") || 1;
-  const size = searchParams.get("size") || 50;
-  const sortField = searchParams.get("sort") || "title";
-  const sortOrder = searchParams.get("order") || "asc";
-  const filter = searchParams.get("filter")?.toLowerCase() || "";
-  const query = searchParams.get("q")?.toLowerCase() || "";
-  const limit = parseInt(searchParams.get("limit") || 0);
-  const offset = parseInt(searchParams.get("offset") || 0);
+  // ✅ Extract query params safely from req.query
+  const {
+    page = 1,
+    size = 50,
+    sort = "title",
+    order = "asc",
+    filter = "",
+    q = "",
+    limit = 0,
+    offset = 0
+  } = req.query;
 
   try {
     const apiRes = await fetch(
@@ -71,33 +72,38 @@ export default async function handler(req, res) {
     }
 
     // Filtering
-    if (filter) {
+    const f = filter.toLowerCase();
+    const ql = q.toLowerCase();
+
+    if (f) {
       shows = shows.filter(
         (s) =>
-          s.title?.toLowerCase().includes(filter) ||
-          s.description?.toLowerCase().includes(filter)
+          s.title?.toLowerCase().includes(f) ||
+          s.description?.toLowerCase().includes(f)
       );
     }
-    if (query) {
+    if (ql) {
       shows = shows.filter(
         (s) =>
-          s.title?.toLowerCase().includes(query) ||
-          s.description?.toLowerCase().includes(query)
+          s.title?.toLowerCase().includes(ql) ||
+          s.description?.toLowerCase().includes(ql)
       );
     }
 
     // Sorting
     shows.sort((a, b) => {
-      const valA = (a[sortField] || "").toString().toLowerCase();
-      const valB = (b[sortField] || "").toString().toLowerCase();
-      if (valA < valB) return sortOrder === "asc" ? -1 : 1;
-      if (valA > valB) return sortOrder === "asc" ? 1 : -1;
+      const valA = (a[sort] || "").toString().toLowerCase();
+      const valB = (b[sort] || "").toString().toLowerCase();
+      if (valA < valB) return order === "asc" ? -1 : 1;
+      if (valA > valB) return order === "asc" ? 1 : -1;
       return 0;
     });
 
     // Pagination
     const total = shows.length;
-    const paged = shows.slice(offset, limit ? offset + limit : undefined);
+    const off = parseInt(offset);
+    const lim = parseInt(limit);
+    const paged = shows.slice(off, lim ? off + lim : undefined);
 
     return res.status(200).json({
       total,
