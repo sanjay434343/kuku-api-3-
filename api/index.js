@@ -1,9 +1,9 @@
+// api/index.js
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
   const BASE_URL = "https://tv.kukufm.com/api/v3/home/all/";
 
-  // 🔑 JWT + headers
   const headers = {
     authorization:
       "jwt eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNDE2NDMxMDAsImV4cCI6MTc1OTQ4MzYwNn0.QvWOT8vOqs3LbAateMTR2qDNr2F-m3BmSKYZ6nthjHBOklFtz-4EDAVhoONj9mcg5tX3C0OgXbAFOHLPo7GDnQ",
@@ -13,16 +13,11 @@ export default async function handler(req, res) {
       "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
   };
 
-  // 🍪 Cookies
   const cookies = {
-    AWSALB:
-      "yJeZDKibw/CnVaetLLYzhJf7QdZ9+hI9nDbmuwS6Vtl59QJ6IPsm3AL+J5yjMIvYfQk4bxkh0zN2Ey5tK+wh8v6j1CdkATuLLpM/iyo2TyH0Guyf5vUEbdzwWRQXkS2Kp9suanmmu6cU5qDZ0OypxMb7IiF6al6TuJLDM76PZTAF1r4hXUTAHOHWv7Z9KA==",
-    AWSALBCORS:
-      "yJeZDKibw/CnVaetLLYzhJf7QdZ9+hI9nDbmuwS6Vtl59QJ6IPsm3AL+J5yjMIvYfQk4bxkh0zN2Ey5tK+wh8v6j1CdkATuLLpM/iyo2TyH0Guyf5vUEbdzwWRQXkS2Kp9suanmmu6cU5qDZ0OypxMb7IiF6al6TuJLDM76PZTAF1r4hXUTAHOHWv7Z9KA==",
-    AWSALBTG:
-      "een7iLVSQ69R0Bcy9yvtKq/2eKo2nYnBy5+YzBMi1GNPvEh7UiUzqs5jxL4KwD4L/BfLTjLeaIOr8WdN3SyIuTRj/6K9Ciogs5kSRXUg0pL36vHDNK9pmakyHLVDHOGz4OTupnbS2Rjgy8qOgqv8LVKzHcwgj8uPt92s+rc2+vLmA8lxx+gEm3ZSpzDi43NnsobhqpsnSyu/Szy1mpXUxnj7P+4LoKY0Hf9AFKBXFDDukMtY2aHXT+mFFJwW5vDmDIRgaLxpZSVnxpwhaM1mh55QAwACEpvlGZtikT/3SAUzbbIuK2B5ZV7LjGnig3oQdTWAnZqoYSjv5oI4Lbv4MY8XmBk=",
-    AWSALBTGCORS:
-      "een7iLVSQ69R0Bcy9yvtKq/2eKo2nYnBy5+YzBMi1GNPvEh7UiUzqs5jxL4KwD4L/BfLTjLeaIOr8WdN3SyIuTRj/6K9Ciogs5kSRXUg0pL36vHDNK9pmakyHLVDHOGz4OTupnbS2Rjgy8qOgqv8LVKzHcwgj8uPt92s+rc2+vLmA8lxx+gEm3ZSpzDi43NnsobhqpsnSyu/Szy1mpXUxnj7P+4LoKY0Hf9AFKBXFDDukMtY2aHXT+mFFJwW5vDmDIRgaLxpZSVnxpwhaM1mh55QAwACEpvlGZtikT/3SAUzbbIuK2B5ZV7LjGnig3oQdTWAnZqoYSjv5oI4Lbv4MY8XmBk=",
+    AWSALB: "yJeZDKibw...",
+    AWSALBCORS: "yJeZDKibw...",
+    AWSALBTG: "een7iLVSQ...",
+    AWSALBTGCORS: "een7iLVSQ...",
     "CloudFront-Key-Pair-Id": "K2ZMC0VBPI9ZOX"
   };
 
@@ -32,7 +27,7 @@ export default async function handler(req, res) {
       .join("; ");
   }
 
-  // ✅ Extract query params safely from req.query
+  // ✅ Query params
   const {
     page = 1,
     size = 50,
