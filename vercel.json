@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "functions": {
+    "api/show.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    { "src": "/api/show", "dest": "/api/show.js" }
+  ]
+}
